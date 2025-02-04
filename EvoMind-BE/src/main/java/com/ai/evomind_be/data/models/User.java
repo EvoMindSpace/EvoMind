@@ -1,4 +1,4 @@
-package com.ai.evomind_be.Data.Model;
+package com.ai.evomind_be.data.models;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Id;

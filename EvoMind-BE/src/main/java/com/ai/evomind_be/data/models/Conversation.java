@@ -1,7 +1,9 @@
-package com.ai.evomind_be.Data.Model;
+package com.ai.evomind_be.data.models;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import lombok.Data;
 
+import java.time.LocalDateTime;
+@Data
 @Entity
 @Table(name = "conversations")
 public class Conversation {
