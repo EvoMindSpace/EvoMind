@@ -103,7 +103,7 @@ export default function Sidebar({ isExpanded, setIsExpanded }: SidebarProps) {
 
 	return (
 		<motion.aside
-			className="bg-secondary-400 h-full flex flex-col justify-between border-r border-secondary-300"
+			className="bg-card h-full flex flex-col justify-between border-r border-secondary-300"
 			initial={{ width: "4rem" }}
 			animate={{ width: isExpanded ? "16rem" : "4rem" }}
 			transition={{ duration: 0.3, ease: "easeInOut" }}
