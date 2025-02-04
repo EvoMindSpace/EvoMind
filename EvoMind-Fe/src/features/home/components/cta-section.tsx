@@ -1,31 +1,43 @@
 "use client";
 
+import { FadeInWhenVisible } from "@/components/animation";
+import Badge from "@/components/badge";
+import { SparklesCore } from "@/components/sparkles";
 import { motion } from "framer-motion";
 import { ExternalLinkIcon, RocketIcon } from "lucide-react";
 
 export function CTASection() {
 	return (
-		<section className="py-20 px-4 bg-[#1A1A1A] rounded-2xl">
+		<section className="py-20 px-4 bg-black/[0.96] rounded-2xl relative">
+			<div className="h-full w-full absolute inset-0 z-0">
+				<SparklesCore
+					id="tsparticlesfullpage"
+					background="transparent"
+					minSize={0.6}
+					maxSize={1.4}
+					particleDensity={100}
+					className="w-full min-h-screen"
+					particleColor="#FFFFFF"
+				/>
+			</div>
 			<div className="container mx-auto max-w-4xl text-center">
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					viewport={{ once: true }}
-					className="inline-flex items-center gap-2 bg-[#1E2718] text-primary px-6 py-2.5 rounded-full text-sm font-medium mb-8"
-				>
-					<RocketIcon className="w-4 h-4" />
-					Get Started Now
-				</motion.div>
+				<FadeInWhenVisible>
+					<div className="flex items-center justify-center mb-8">
+						<Badge icon={RocketIcon}>Get Started Now</Badge>
+					</div>
+				</FadeInWhenVisible>
 
 				<motion.h2
 					initial={{ opacity: 0, y: 20 }}
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ delay: 0.1 }}
-					className="text-4xl md:text-5xl font-bold mb-6"
+					className="text-4xl md:text-5xl font-bold mb-6 text-white"
 				>
 					Be Part of the{" "}
-					<span className="text-primary">Future of Meme Finance</span>
+					<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+						Future of Meme Finance
+					</span>
 				</motion.h2>
 
 				<motion.p
@@ -69,9 +81,10 @@ export function CTASection() {
 					transition={{ delay: 0.4 }}
 					className="flex flex-col md:flex-row items-center justify-center gap-4"
 				>
-					<button className="w-full md:w-auto bg-primary text-black px-8 py-3 rounded-full font-medium hover:bg-primary/90 transition-colors">
+					<button className="w-full md:w-auto bg-purple-600 hover:bg-purple text-black px-8 py-3 rounded-full font-medium transition-colors">
 						Coming soon on Mainnet →
 					</button>
+
 					<button className="w-full md:w-auto border border-primary text-primary px-8 py-3 rounded-full font-medium hover:bg-primary/10 transition-colors inline-flex items-center gap-2">
 						Try on Devnet
 						<ExternalLinkIcon className="w-4 h-4" />

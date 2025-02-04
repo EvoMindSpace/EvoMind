@@ -1,16 +1,30 @@
 import { BellIcon, DiscIcon as DiscordIcon, TwitterIcon } from "lucide-react";
 import Link from "next/link";
+import { SparklesCore } from "./sparkles";
 
 export function Footer() {
 	return (
-		<footer className="bg-[#111111] pt-20 pb-8 px-4">
+		<footer className=" pt-20 pb-8 px-4 relative">
+			<div className="h-full w-full absolute inset-0 z-0">
+				<SparklesCore
+					id="tsparticlesfullpage"
+					background="transparent"
+					minSize={0.6}
+					maxSize={1.4}
+					particleDensity={100}
+					className="w-full min-h-screen"
+					particleColor="#FFFFFF"
+				/>
+			</div>
 			<div className="container mx-auto">
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
 					{/* Logo and Description */}
 					<div>
 						<div className="flex items-center gap-2 mb-6">
 							{/* <Logo /> */}
-							<span className="text-2xl font-bold">EvoMind</span>
+							<span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+								EvoMind
+							</span>
 						</div>
 						<p className="text-gray-400 mb-6">
 							Transform trending news into profitable meme opportunities. Join
@@ -34,7 +48,7 @@ export function Footer() {
 
 					{/* Navigation */}
 					<div>
-						<h3 className="text-lg font-bold mb-6">NAVIGATION</h3>
+						<h3 className="text-lg font-bold mb-6 text-white">NAVIGATION</h3>
 						<ul className="space-y-4">
 							{["Features", "Airdrop", "How it Works", "Contract Flow"].map(
 								(item) => (
@@ -53,7 +67,9 @@ export function Footer() {
 
 					{/* Join Community */}
 					<div>
-						<h3 className="text-lg font-bold mb-6">JOIN OUR COMMUNITY</h3>
+						<h3 className="text-lg font-bold mb-6 text-white">
+							JOIN OUR COMMUNITY
+						</h3>
 						<p className="text-gray-400 mb-6">
 							Get early access and be part of our journey
 						</p>

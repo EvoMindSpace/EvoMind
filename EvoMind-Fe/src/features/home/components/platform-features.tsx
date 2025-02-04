@@ -1,6 +1,7 @@
 "use client";
 
 import { FadeInWhenVisible, StaggerChildren } from "@/components/animation";
+import { SparklesCore } from "@/components/sparkles";
 import { motion } from "framer-motion";
 import { MessageSquare, BotIcon as Robot, Shield, Users } from "lucide-react";
 
@@ -33,7 +34,19 @@ const PlatformFeatures = () => {
 	];
 
 	return (
-		<section className="py-20 px-4 bg-black/20">
+		<section className="py-20 px-4 bg-black/[0.96] relative">
+			<div className="h-full w-full absolute inset-0 z-0">
+				<SparklesCore
+					id="tsparticlesfullpage"
+					background="transparent"
+					minSize={0.6}
+					maxSize={1.4}
+					particleDensity={100}
+					className="w-full min-h-screen"
+					particleColor="#FFFFFF"
+				/>
+			</div>
+
 			<div className="container mx-auto max-w-7xl text-center">
 				<FadeInWhenVisible>
 					<h2 className="text-4xl md:text-5xl font-bold text-center mb-6 text-white">
