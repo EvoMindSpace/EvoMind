@@ -1,5 +1,6 @@
 "use client";
 
+import { SparklesCore } from "@/components/sparkles";
 import { motion } from "framer-motion";
 import {
 	BarChart,
@@ -98,19 +99,30 @@ const bottomSteps = [
 
 export function ProcessTimeline() {
 	return (
-		<div className="py-20 px-4">
+		<div className="py-20 px-4 bg-black/[0.96] relative">
+			<div className="h-full w-full absolute inset-0 z-0">
+				<SparklesCore
+					id="tsparticlesfullpage"
+					background="transparent"
+					minSize={0.6}
+					maxSize={1.4}
+					particleDensity={100}
+					className="w-full min-h-screen"
+					particleColor="#FFFFFF"
+				/>
+			</div>
 			<motion.h2
 				initial={{ opacity: 0, y: 20 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true }}
-				className="text-4xl md:text-5xl font-bold text-center mb-20"
+				className="text-4xl md:text-5xl font-bold text-center mb-20 text-white"
 			>
 				WEBSITE DESIGN & DEV PROCESS
 			</motion.h2>
 
 			<div className="relative max-w-7xl mx-auto">
 				{/* Main Timeline Line */}
-				<div className="absolute left-0 right-0 top-1/2 h-1 bg-[#722ED1]/20 -translate-y-1/2" />
+				<div className="absolute left-0 right-0 top-1/2 h-1 bg-card -translate-y-1/2" />
 
 				{/* Top Row */}
 				<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-32">
@@ -123,9 +135,9 @@ export function ProcessTimeline() {
 							transition={{ delay: index * 0.1 }}
 							className="relative"
 						>
-							<div className="absolute bottom-0 left-1/2 w-px h-16 bg-[#722ED1]/20 translate-x-[-50%]" />
+							<div className="absolute bottom-0 left-1/2 w-px h-16 bg-card translate-x-[-50%]" />
 							<div className="text-center">
-								<div className="w-16 h-16 rounded-full bg-[#F9F0FF] flex items-center justify-center mx-auto mb-4">
+								<div className="w-16 h-16 rounded-full bg-card flex items-center justify-center mx-auto mb-4">
 									<step.icon className="w-8 h-8 text-[#722ED1]" />
 								</div>
 								<h3 className="text-lg font-bold mb-4">{step.title}</h3>
@@ -150,9 +162,9 @@ export function ProcessTimeline() {
 							transition={{ delay: (index + topSteps.length) * 0.1 }}
 							className="relative"
 						>
-							<div className="absolute top-0 left-1/2 w-px h-16 bg-[#722ED1]/20 translate-x-[-50%]" />
+							<div className="absolute top-0 left-1/2 w-px h-16 bg-card translate-x-[-50%]" />
 							<div className="text-center pt-20">
-								<div className="w-16 h-16 rounded-full bg-[#F9F0FF] flex items-center justify-center mx-auto mb-4">
+								<div className="w-16 h-16 rounded-full bg-card flex items-center justify-center mx-auto mb-4">
 									<step.icon className="w-8 h-8 text-[#722ED1]" />
 								</div>
 								<h3 className="text-lg font-bold mb-4">{step.title}</h3>
@@ -169,12 +181,12 @@ export function ProcessTimeline() {
 				{/* Start and End Arrows */}
 				<div className="absolute left-[-40px] top-1/2 -translate-y-1/2">
 					<div className="w-8 h-8 rounded-full border-2 border-[#722ED1] flex items-center justify-center">
-						<div className="w-4 h-4 border-t-2 border-r-2 border-[#722ED1] rotate-45 translate-x-[-2px]" />
+						<div className="w-3 h-3 border-t-2 border-r-2 border-[#722ED1] rotate-45 translate-x-[-2px]" />
 					</div>
 				</div>
 				<div className="absolute right-[-40px] top-1/2 -translate-y-1/2">
 					<div className="w-8 h-8 rounded-full border-2 border-[#722ED1] flex items-center justify-center">
-						<div className="w-4 h-4 border-b-2 border-l-2 border-[#722ED1] rotate-45 translate-x-[2px]" />
+						<div className="w-3 h-3 border-b-2 border-l-2 border-[#722ED1] rotate-45 translate-x-[2px]" />
 					</div>
 				</div>
 			</div>

@@ -1,31 +1,40 @@
 "use client";
-import { motion } from "framer-motion";
-import Image from "next/image";
-import Logo from "/public/image.png";
 
-const Navigation = () => {
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { Bot, Menu } from "lucide-react";
+import Link from "next/link";
+
+export default function Navbar() {
 	return (
 		<motion.nav
-			className="fixed top-0 left-0 right-0 z-50 bg-secondary-400/80 backdrop-blur-sm"
 			initial={{ y: -100 }}
 			animate={{ y: 0 }}
-			transition={{ duration: 0.5 }}
+			className="flex items-center justify-between px-6 py-4 backdrop-blur-sm border-b border-white/10"
 		>
-			<div className="container mx-auto px-4 py-4 flex justify-between items-center">
-				<Image
-					src={Logo}
-					alt="EvoMind Logo"
-					width={40}
-					height={40}
-					className="bg-primary rounded-lg !h-10 !w-10 object-cover"
-				/>
-				{/* <div className="h-10 w-10 rounded-lg bg-primary">Logo</div> */}
-				<button className="px-6 py-2 rounded-full border border-primary-300 text-primary-300 hover:bg-primary-300 hover:text-secondary-400 transition-colors duration-300">
-					Connect Wallet
-				</button>
+			<Link href="/" className="flex items-center space-x-2">
+				<Bot className="w-8 h-8 text-purple-500" />
+				{/* <span className="text-white font-medium text-xl">ResearchAI</span> */}
+				<span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+					EvoMind
+				</span>
+			</Link>
+
+			<div className="hidden md:flex items-center space-x-4">
+				<Button
+					variant="ghost"
+					className="text-white hover:text-purple-400 rounded-sm"
+				>
+					Sign In
+				</Button>
+				<Button className="bg-purple-600 hover:bg-purple-700 text-white !rounded-sm">
+					Try Now
+				</Button>
 			</div>
+
+			<Button variant="ghost" size="icon" className="md:hidden text-white">
+				<Menu className="w-6 h-6" />
+			</Button>
 		</motion.nav>
 	);
-};
-
-export default Navigation;
+}

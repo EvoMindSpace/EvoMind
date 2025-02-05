@@ -1,16 +1,30 @@
 "use client";
 
 import { FadeInWhenVisible, StaggerChildren } from "@/components/animation";
+import { SparklesCore } from "@/components/sparkles";
 
 import { motion } from "framer-motion";
 
 const ContractFlow = () => {
 	return (
-		<section className="py-20 px-4 bg-[#111111]">
+		<section className="py-20 px-4 bg-black/[0.96] relative">
+			<div className="h-full w-full absolute inset-0 z-0">
+				<SparklesCore
+					id="tsparticlesfullpage"
+					background="transparent"
+					minSize={0.6}
+					maxSize={1.4}
+					particleDensity={100}
+					className="w-full min-h-screen"
+					particleColor="#FFFFFF"
+				/>
+			</div>
 			<div className="container mx-auto max-w-4xl text-center">
 				<FadeInWhenVisible>
-					<h2 className="text-4xl md:text-5xl font-bold mb-6">Contract Flow</h2>
-					<p className="text-gray-400 text-lg mb-16 max-w-3xl mx-auto">
+					<h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+						Contract Flow
+					</h2>
+					<p className="text-lg mb-16 max-w-3xl mx-auto text-white">
 						Technical implementation of the Meme Fund Solana Program
 					</p>
 				</FadeInWhenVisible>
@@ -19,13 +33,13 @@ const ContractFlow = () => {
 					<StaggerChildren>
 						{/* Step 1 */}
 						<motion.div
-							className="relative bg-[#1A1A1A] rounded-xl p-8 text-left"
+							className="relative bg-card rounded-xl p-8 text-left"
 							variants={{
 								hidden: { opacity: 0, y: 20 },
 								visible: { opacity: 1, y: 0 },
 							}}
 						>
-							<div className="absolute -top-3 -left-3 w-10 h-10 rounded-xl bg-[#1E2718] flex items-center justify-center text-primary font-bold">
+							<div className="absolute -top-3 -left-3 w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-black font-bold">
 								1
 							</div>
 							<h3 className="text-xl font-bold mb-4 pl-8">
@@ -58,13 +72,13 @@ const ContractFlow = () => {
 
 						{/* Step 2 */}
 						<motion.div
-							className="relative bg-[#1A1A1A] rounded-xl p-8 text-left"
+							className="relative bg-card rounded-xl p-8 text-left"
 							variants={{
 								hidden: { opacity: 0, y: 20 },
 								visible: { opacity: 1, y: 0 },
 							}}
 						>
-							<div className="absolute -top-3 -left-3 w-10 h-10 rounded-xl bg-[#1E2718] flex items-center justify-center text-primary font-bold">
+							<div className="absolute -top-3 -left-3 w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-black font-bold">
 								2
 							</div>
 							<h3 className="text-xl font-bold mb-4 pl-8">2. Contribute</h3>
@@ -94,13 +108,13 @@ const ContractFlow = () => {
 
 						{/* Step 3 */}
 						<motion.div
-							className="relative bg-[#1A1A1A] rounded-xl p-8 text-left"
+							className="relative bg-card rounded-xl p-8 text-left"
 							variants={{
 								hidden: { opacity: 0, y: 20 },
 								visible: { opacity: 1, y: 0 },
 							}}
 						>
-							<div className="absolute -top-3 -left-3 w-10 h-10 rounded-xl bg-[#1E2718] flex items-center justify-center text-primary font-bold">
+							<div className="absolute -top-3 -left-3 w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-black font-bold">
 								3
 							</div>
 							<h3 className="text-xl font-bold mb-4 pl-8">3. Start Meme</h3>
@@ -130,13 +144,13 @@ const ContractFlow = () => {
 
 						{/* Step 4 */}
 						<motion.div
-							className="relative bg-[#1A1A1A] rounded-xl p-8 text-left"
+							className="relative bg-card rounded-xl p-8 text-left"
 							variants={{
 								hidden: { opacity: 0, y: 20 },
 								visible: { opacity: 1, y: 0 },
 							}}
 						>
-							<div className="absolute -top-3 -left-3 w-10 h-10 rounded-xl bg-[#1E2718] flex items-center justify-center text-primary font-bold">
+							<div className="absolute -top-3 -left-3 w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-black font-bold">
 								4
 							</div>
 							<h3 className="text-xl font-bold mb-4 pl-8">4. Claim Token</h3>
@@ -148,7 +162,7 @@ const ContractFlow = () => {
 
 						{/* Example Values */}
 						<motion.div
-							className="bg-[#1A1A1A] rounded-xl p-8 text-left mt-8"
+							className="bg-card rounded-xl p-8 text-left mt-8"
 							variants={{
 								hidden: { opacity: 0, y: 20 },
 								visible: { opacity: 1, y: 0 },

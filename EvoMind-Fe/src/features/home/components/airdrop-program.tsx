@@ -2,6 +2,7 @@
 
 import { FadeInWhenVisible, StaggerChildren } from "@/components/animation";
 import Badge from "@/components/badge";
+import { SparklesCore } from "@/components/sparkles";
 import { motion } from "framer-motion";
 import { ArrowRight, Coins, Gift, Users, Vote } from "lucide-react";
 
@@ -58,7 +59,7 @@ const AirdropCard = ({
 		whileInView={{ opacity: 1, y: 0 }}
 		viewport={{ once: true }}
 		transition={{ delay: index * 0.1 }}
-		className="bg-card p-6 rounded-lg relative"
+		className="bg-card p-6 !rounded-lg relative"
 	>
 		<div className="bg-primary-900/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4 mx-auto">
 			<Icon className="w-6 h-6 text-primary-400" />
@@ -76,7 +77,18 @@ const AirdropCard = ({
 
 const AirdropProgram = () => {
 	return (
-		<section className="py-20 px-4 bg-[#111111]">
+		<section className="py-20 px-4 bg-black/[0.96] relative h-screen">
+			<div className="h-full w-full absolute inset-0 z-0">
+				<SparklesCore
+					id="tsparticlesfullpage"
+					background="transparent"
+					minSize={0.6}
+					maxSize={1.4}
+					particleDensity={100}
+					className="w-full min-h-screen"
+					particleColor="#FFFFFF"
+				/>
+			</div>
 			<div className="container mx-auto max-w-7xl text-center">
 				<FadeInWhenVisible>
 					<div className="flex items-center justify-center mb-8">
@@ -85,7 +97,7 @@ const AirdropProgram = () => {
 				</FadeInWhenVisible>
 
 				<FadeInWhenVisible>
-					<h2 className="text-4xl md:text-5xl font-bold mb-6">
+					<h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
 						Earn Points, Get Rewarded
 					</h2>
 					<p className="text-gray-400 text-lg mb-16 max-w-3xl mx-auto">
