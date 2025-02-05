@@ -14,7 +14,7 @@ const LayoutDashboard = ({ children }: { children: React.ReactNode }) => {
 					isExpanded={isSidebarExpanded}
 					setIsExpanded={setIsSidebarExpanded}
 				/>
-				<main className="flex-1 overflow-y-auto p-4">{children}</main>
+				<main className="flex-1 overflow-y-auto p-4 bg-card">{children}</main>
 			</div>
 		</div>
 	);
