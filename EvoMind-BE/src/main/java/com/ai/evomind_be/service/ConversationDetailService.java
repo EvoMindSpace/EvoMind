@@ -43,13 +43,13 @@ public class ConversationDetailService {
                 conversationDetail.setMessage(conversationRequest.getMessage());
                 conversationDetail.setIsQuestion(Boolean.TRUE);
                 conversationDetailRepository.save(conversationDetail);
-                logger.error("Create ConversationDetail From User" );
+                logger.info("Create ConversationDetail From User" );
                 //ConversationDetail AI
                 conversationDetail.setId(null);
                 conversationDetail.setMessage(conversationRequest.getResult_message());
                 conversationDetail.setIsQuestion(Boolean.FALSE);
                 conversationDetailRepository.save(conversationDetail);
-                logger.error("Create ConversationDetail From AI" );
+                logger.info("Create ConversationDetail From AI" );
             }
             else {
                 logger.error("conversation not found" + conversationRequest.getConversation_id());

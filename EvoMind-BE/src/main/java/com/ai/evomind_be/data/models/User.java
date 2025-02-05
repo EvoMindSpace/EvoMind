@@ -11,12 +11,14 @@ import java.time.LocalDateTime;
 @Data
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto increment
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "username", nullable = false, unique = true)
     private String username;
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+    @Column(name = "img", nullable = true)
+    private String img;
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime timestamp = LocalDateTime.now();
 }
