@@ -20,12 +20,13 @@ interface ChatbotProps {
 	};
 }
 
-export default function AiChat({ selectedChatbot }: ChatbotProps) {
+export default function AiChat() {
 	const [input, setInput] = useState("");
+
 	const [messages, setMessages] = useState<Message[]>([
 		{
 			role: "agent",
-			content: `Hello, I am ${selectedChatbot?.name}. How can I assist you today?`,
+			content: `Hello, I am bot. How can I assist you today?`,
 			timestamp: "11:16:32 PM",
 		},
 	]);
@@ -76,7 +77,7 @@ export default function AiChat({ selectedChatbot }: ChatbotProps) {
 										)}
 									>
 										<span className="text-sm font-medium">
-											{message.role === "agent" ? selectedChatbot?.name : "You"}
+											{message.role === "agent" ? "Bot" : "You"}
 										</span>
 										<span className="text-xs text-muted-foreground">
 											{message.timestamp}
