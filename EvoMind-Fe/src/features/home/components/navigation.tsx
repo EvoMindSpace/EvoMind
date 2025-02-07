@@ -21,13 +21,10 @@ export default function Navbar() {
 			</Link>
 
 			<div className="hidden md:flex items-center space-x-4">
-				<Button
-					variant="ghost"
-					className="text-white hover:text-purple-400 rounded-sm"
-				>
+				<Button variant="ghost" className="text-white hover:text-purple-400">
 					Sign In
 				</Button>
-				<Button className="bg-purple-600 hover:bg-purple-700 text-white !rounded-sm">
+				<Button className="bg-purple-600 hover:bg-purple-700 text-white">
 					Try Now
 				</Button>
 			</div>

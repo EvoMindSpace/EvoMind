@@ -68,8 +68,8 @@ const PlatformFeatures = () => {
 								transition={{ delay: index * 0.1 }}
 								className="bg-[#1A1A1A] hover:bg-[#222222] p-6 rounded-lg"
 							>
-								<div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center mb-4">
-									<feature.icon className="w-6 h-6 text-white" />
+								<div className="bg-primary-900/20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+									<feature.icon className="w-6 h-6 text-primary-400" />
 								</div>
 								<h3 className="text-xl font-semibold mb-2 text-white">
 									{feature.title}

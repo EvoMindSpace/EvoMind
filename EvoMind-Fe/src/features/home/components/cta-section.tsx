@@ -3,6 +3,7 @@
 import { FadeInWhenVisible } from "@/components/animation";
 import Badge from "@/components/badge";
 import { SparklesCore } from "@/components/sparkles";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ExternalLinkIcon, RocketIcon } from "lucide-react";
 
@@ -81,14 +82,17 @@ export function CTASection() {
 					transition={{ delay: 0.4 }}
 					className="flex flex-col md:flex-row items-center justify-center gap-4"
 				>
-					<button className="w-full md:w-auto bg-purple-600 hover:bg-purple text-black px-8 py-3 rounded-full font-medium transition-colors">
+					<Button className="w-full !cursor-pointer md:w-auto bg-gradient-to-r from-purple-400 to-pink-600 hover:bg-purple text-black px-8 py-3 rounded-full font-medium transition-colors">
 						Coming soon on Mainnet →
-					</button>
+					</Button>
 
-					<button className="w-full md:w-auto border border-primary text-primary px-8 py-3 rounded-full font-medium hover:bg-primary/10 transition-colors inline-flex items-center gap-2">
+					<Button
+						className="text-white border-purple-500 hover:bg-purple-500/20 rounded-full w-full md:w-auto px-8 py-3 !cursor-pointer"
+						variant="outline"
+					>
 						Try on Devnet
 						<ExternalLinkIcon className="w-4 h-4" />
-					</button>
+					</Button>
 				</motion.div>
 			</div>
 		</section>
