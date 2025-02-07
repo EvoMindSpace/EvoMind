@@ -18,5 +18,5 @@ public class ConversationDetail {
     @Column(name = "is_question", nullable = false)
     private Boolean isQuestion;
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime timestamp = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
