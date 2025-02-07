@@ -7,14 +7,16 @@ import Sidebar from "./sidebar";
 const LayoutDashboard = ({ children }: { children: React.ReactNode }) => {
 	const [isSidebarExpanded, setIsSidebarExpanded] = useState<boolean>(false);
 	return (
-		<div className="flex flex-col h-screen text-white">
+		<div className="flex flex-col text-white min-h-screen">
 			<Header />
-			<div className="flex flex-1 overflow-hidden">
+			<div className="flex h-[calc(100vh-72px)]">
 				<Sidebar
 					isExpanded={isSidebarExpanded}
 					setIsExpanded={setIsSidebarExpanded}
 				/>
-				<main className="flex-1 overflow-y-auto p-4 bg-card">{children}</main>
+				<main className="flex-1 overflow-y-auto scrollbar-hide bg-card  h-[calc(100vh-72px)]">
+					{children}
+				</main>
 			</div>
 		</div>
 	);

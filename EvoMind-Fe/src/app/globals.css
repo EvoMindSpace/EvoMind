@@ -47,3 +47,8 @@
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
+
+.lucide {
+  /* Change this! */
+  stroke-width: 1px;
+}

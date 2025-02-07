@@ -9,10 +9,9 @@ import {
 	Briefcase,
 	ChevronsLeft,
 	ChevronsRight,
-	Diamond,
 	DiscIcon as Discord,
 	FileText,
-	Home,
+	HouseIcon,
 	Plus,
 	Twitter,
 } from "lucide-react";
@@ -35,12 +34,12 @@ export default function Sidebar({ isExpanded, setIsExpanded }: SidebarProps) {
 	const menuItems = [
 		{
 			index: 0,
-			icon: Home,
+			icon: HouseIcon,
 			label: "Market",
 			color: "text-primary-300",
 			image: "https://app.holoworld.com/icons/navbar/home-white.svg",
 			active: "https://app.holoworld.com/icons/navbar/home-active.svg",
-			href: "/market",
+			href: "/dashboard",
 		},
 		{
 			index: 1,
@@ -64,14 +63,14 @@ export default function Sidebar({ isExpanded, setIsExpanded }: SidebarProps) {
 		// 	image: "https://app.holoworld.com/icons/navbar/chat-white.svg",
 		// 	active: "https://app.holoworld.com/icons/navbar/chat-active.svg",
 		// },
-		{
-			index: 4,
-			icon: Diamond,
-			label: "Stake",
-			image: "https://app.holoworld.com/icons/navbar/reward.svg",
-			active: "https://app.holoworld.com/icons/navbar/reward-active.svg",
-			href: "/stake",
-		},
+		// {
+		// 	index: 4,
+		// 	icon: Diamond,
+		// 	label: "Stake",
+		// 	image: "https://app.holoworld.com/icons/navbar/reward.svg",
+		// 	active: "https://app.holoworld.com/icons/navbar/reward-active.svg",
+		// 	href: "/stake",
+		// },
 	];
 
 	const docs = [
@@ -119,15 +118,7 @@ export default function Sidebar({ isExpanded, setIsExpanded }: SidebarProps) {
 											href={item.href}
 											className="flex items-center p-4 hover:bg-secondary-300 transition-colors gap-0"
 										>
-											<Image
-												src={
-													item.index === activeItem ? item.active : item.image
-												}
-												alt={item.label}
-												width={24}
-												height={24}
-												className="w-6 h-6 flex-shrink-0"
-											/>
+											<item.icon className="w-6 h-6 flex-shrink-0" />
 											<motion.span
 												className="ml-4 whitespace-nowrap"
 												initial={{ opacity: 0, width: 0 }}
@@ -142,7 +133,10 @@ export default function Sidebar({ isExpanded, setIsExpanded }: SidebarProps) {
 										</Link>
 									</TooltipTrigger>
 
-									<TooltipContent className="bg-secondary-200" side="right">
+									<TooltipContent
+										className="bg-purple-500/20 text-white border-purple-500"
+										side="right"
+									>
 										<p>{item.label}</p>
 									</TooltipContent>
 								</Tooltip>
