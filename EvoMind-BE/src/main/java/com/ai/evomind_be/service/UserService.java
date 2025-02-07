@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -16,6 +17,7 @@ public class UserService {
     UserRepository userRepository;
     public Map<String, Object> createAndCheckUser(Map<String, Object> attributes){
         try {
+            Map<String, Object>  result = new HashMap<>(attributes);
             String email = (String) attributes.get("email");
             String name = (String) attributes.get("name");
             String urlImg = (String) attributes.get("picture");
@@ -31,8 +33,8 @@ public class UserService {
                 user = userRepository.save(newUser);
                 logger.info("New");
             }
-            attributes.put("id",user.getId());
-            return attributes;
+            result.put("User",user);
+            return result;
         } catch (Exception e) {
             logger.error("Error processing CreateUser", e);
             throw e;
