@@ -4,9 +4,10 @@ import com.ai.evomind_be.data.models.Conversation;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Data;
 
 import java.time.LocalDateTime;
-
+@Data
 public class ConversationDetailResponse {
 
     private Long id;

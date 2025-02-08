@@ -26,7 +26,7 @@ public class ConversationController  {
     ConversationDetailService conversationDetailService;
     @Autowired
     ConversationService conversationService;
-    @GetMapping()
+    @GetMapping("/GetConversation")
     public ResponseEntity<List<ConversationResponse>> GetConversation(Long userId) {
         try {
             return ResponseEntity.ok(conversationService.GetListConversation(userId));
@@ -35,7 +35,7 @@ public class ConversationController  {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR , "System error");
         }
     }
-    @GetMapping
+    @GetMapping("/GetConversationDetail")
     public ResponseEntity<List<ConversationDetailResponse>> GetConversationDetail(Long conversationId) {
         try {
             return ResponseEntity.ok(conversationDetailService.GetListConversationDetail(conversationId));
@@ -45,7 +45,7 @@ public class ConversationController  {
         }
     }
 
-    @PostMapping
+    @PostMapping("/receiveMessage")
     public ResponseEntity<String> receiveMessage(@RequestBody ConversationRequest conversationRequest) {
         try {
 

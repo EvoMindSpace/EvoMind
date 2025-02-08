@@ -21,7 +21,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @GetMapping("/login_google")
-    public Map<String, Object> user(OAuth2User principal) {
+    public Map<String, Object> user(OAuth2AuthenticationToken principal) {
         try {
             if (!(principal instanceof OAuth2AuthenticationToken)) {
                 throw new IllegalArgumentException("Invalid authentication type: Expected OAuth2AuthenticationToken, but got "
