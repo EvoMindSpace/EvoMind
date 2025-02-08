@@ -6,6 +6,8 @@ import { Bot, Menu } from "lucide-react";
 import Link from "next/link";
 
 export default function Navbar() {
+	// const
+
 	return (
 		<motion.nav
 			initial={{ y: -100 }}
@@ -25,7 +27,7 @@ export default function Navbar() {
 					Sign In
 				</Button>
 				<Button className="bg-purple-600 hover:bg-purple-700 text-white">
-					Try Now
+					Get Started
 				</Button>
 			</div>
 

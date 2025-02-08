@@ -8,7 +8,7 @@ const Dashboard = () => {
 	return (
 		<div className="w-full">
 			<Hero />
-			<div className="max-w-[1700px] mx-auto">
+			<div className="2xl:max-w-[1700px] mx-auto px-6">
 				<TrendingBar />
 				<TokenGrid />
 			</div>

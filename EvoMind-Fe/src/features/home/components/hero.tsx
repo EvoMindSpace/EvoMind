@@ -1,8 +1,11 @@
 "use client";
 
+import { login } from "@/apis/auth.api";
 import { FloatingPaper } from "@/components/floating-paper";
 import { RoboAnimation } from "@/components/robo-animation";
 import { Button } from "@/components/ui/button";
+import envConfig from "@/configs/config";
+import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { FileText, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -11,7 +14,25 @@ export default function Hero() {
 	const router = useRouter();
 
 	const handleTryNow = () => {
-		router.push("/dashboard");
+		router.push(envConfig.NEXT_PUBLIC_API_URL);
+	};
+
+	const loginMutation = useMutation({
+		mutationKey: ["login-evomind"],
+		mutationFn: () => login(),
+	});
+
+	const handleLogin = () => {
+		loginMutation.mutate(undefined, {
+			onSuccess: (data) => {
+				console.log("🚀 ~ handleLogin ~ data:", data);
+				router.push("/dashboard");
+			},
+
+			onError: (error) => {
+				console.log("🚀 ~ handleLogin ~ error:", error);
+			},
+		});
 	};
 
 	return (
@@ -59,7 +80,7 @@ export default function Hero() {
 							onClick={handleTryNow}
 						>
 							<FileText className="mr-2 h-5 w-5" />
-							Try Now
+							Get Started
 						</Button>
 						<Button
 							size="lg"
