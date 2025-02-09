@@ -1,38 +1,31 @@
 package com.ai.evomind_be.controller;
 
-
+import com.ai.evomind_be.data.models.User;
 import com.ai.evomind_be.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/user")
-public class UserController {
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+public class AuthenController {
     @Autowired
     private UserService userService;
-    @GetMapping("/login_google")
-    public ResponseEntity<Object> user(Long userId) {
+    @GetMapping("/")
+    public Object getDataGoogle(OAuth2AuthenticationToken principal, HttpServletResponse response) {
         try {
-
-            Map<String, Object> attributes = new HashMap<>();
-            attributes=userService.GetDataUser(userId);
-            logger.info("Login successful");
-            return  ResponseEntity.ok(attributes);
+            Map<String, Object> attributes = ((OAuth2AuthenticationToken) principal).getPrincipal().getAttributes();
+            User user =userService.createAndCheckUser(attributes);
+            response.sendRedirect("http://localhost:3000/login/oauth?user_id="+user.getId());
+            return null;
         } catch (Exception e) {
-            logger.error("Error processing user", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR , "System error");
         }
     }
