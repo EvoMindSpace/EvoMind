@@ -5,7 +5,8 @@ import { FloatingPaper } from "@/components/floating-paper";
 import { RoboAnimation } from "@/components/robo-animation";
 import { Button } from "@/components/ui/button";
 import envConfig from "@/configs/config";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { motion } from "framer-motion";
 import { FileText, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -16,6 +17,16 @@ export default function Hero() {
 	const handleTryNow = () => {
 		router.push(envConfig.NEXT_PUBLIC_API_URL);
 	};
+
+	const data = useQuery({
+		queryKey: ["login-auth"],
+		queryFn: () => {
+			return axios.get(
+				"https://evomindbejar.onrender.com/api/user/login_google"
+			);
+		},
+	});
+	console.log("🚀 ~ LoginOAuth ~ data:", data.data);
 
 	const loginMutation = useMutation({
 		mutationKey: ["login-evomind"],
