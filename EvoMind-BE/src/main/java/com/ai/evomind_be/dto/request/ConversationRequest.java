@@ -13,6 +13,5 @@ public class ConversationRequest {
 
     private Long user_id;
     private String message;
-    private String result_message;
     private Long conversation_id ;
 }

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +46,25 @@ public class UserService {
                     .orElseThrow(() -> new RuntimeException("User not found"));
             result.put("User",user);
             return result;
+        } catch (Exception e) {
+            logger.error("Error processing CreateUser", e);
+            throw e;
+        }
+    }
+    public void updateTotalRequest(User user) {
+        try {
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime updateDate = user.getUpdated_at();
+            if(updateDate.toLocalDate().isEqual(now.toLocalDate())){
+                user.setTotal_request(user.getTotal_request()+1);
+                userRepository.save(user);
+            }
+            else{
+                user.setUpdated_at(now);
+                user.setTotal_request(1L);
+                userRepository.save(user);
+            }
+            logger.info("update TotalRequest");
         } catch (Exception e) {
             logger.error("Error processing CreateUser", e);
             throw e;

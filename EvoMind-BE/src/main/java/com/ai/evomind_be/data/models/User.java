@@ -19,6 +19,10 @@ public class User {
     private String email;
     @Column(name = "img", nullable = true)
     private String img;
+    @Column(name = "total_request", nullable = true)
+    private Long total_request =0L;
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime timestamp = LocalDateTime.now();
+    private LocalDateTime created_at = LocalDateTime.now();
+    @Column(name = "updated_at", nullable = true, updatable = false)
+    private LocalDateTime updated_at = LocalDateTime.now();
 }
