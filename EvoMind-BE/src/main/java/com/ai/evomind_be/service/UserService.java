@@ -15,9 +15,8 @@ public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     @Autowired
     UserRepository userRepository;
-    public Map<String, Object> createAndCheckUser(Map<String, Object> attributes){
+    public User createAndCheckUser(Map<String, Object> attributes){
         try {
-            Map<String, Object>  result = new HashMap<>(attributes);
             String email = (String) attributes.get("email");
             String name = (String) attributes.get("name");
             String urlImg = (String) attributes.get("picture");
@@ -33,6 +32,17 @@ public class UserService {
                 user = userRepository.save(newUser);
                 logger.info("New");
             }
+            return user;
+        } catch (Exception e) {
+            logger.error("Error processing CreateUser", e);
+            throw e;
+        }
+    }
+    public Map<String, Object> GetDataUser(Long userId) {
+        try {
+            Map<String, Object> result = new HashMap<>();
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
             result.put("User",user);
             return result;
         } catch (Exception e) {
