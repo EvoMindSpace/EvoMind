@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 import { Footer } from "@/components/footer";
 import { SparklesCore } from "@/components/sparkles";

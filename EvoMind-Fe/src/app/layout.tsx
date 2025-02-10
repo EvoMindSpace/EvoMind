@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/contexts/auth-context";
 import { ReactQueryClientProvider } from "@/providers/QueryClientProvider";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
@@ -20,9 +21,11 @@ export default function RootLayout({
 }>) {
 	return (
 		<ReactQueryClientProvider>
-			<html lang="en">
-				<body className={poppins.className}>{children}</body>
-			</html>
+			<AuthProvider>
+				<html lang="en">
+					<body className={poppins.className}>{children}</body>
+				</html>
+			</AuthProvider>
 		</ReactQueryClientProvider>
 	);
 }
