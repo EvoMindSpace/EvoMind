@@ -13,6 +13,7 @@ public class ConversationRequest {
 
     private Long user_id;
     private String message;
-    private String result_message;
-    private Long conversation_id ;
+    private String image;
+    private String agentName;
+    private Long conversation_id = 0L;
 }

@@ -13,8 +13,12 @@ public class Conversation {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @Column(name = "topic", nullable = false, columnDefinition = "TEXT")
-    private String topic;
+    @Column(name = "agent_name", nullable = false, columnDefinition = "TEXT")
+    private String agentName;
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "image", nullable = false, columnDefinition = "TEXT")
+    private String image;
+    @Column(name = "last_message", nullable = false, columnDefinition = "TEXT")
+    private String lastMessage;
 }
