@@ -51,20 +51,24 @@ public class UserService {
             throw e;
         }
     }
-    public void updateTotalRequest(User user) {
+    public User updateTotalRequest(User user) {
         try {
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime updateDate = user.getUpdated_at();
+            User userResult = new User();
             if(updateDate.toLocalDate().isEqual(now.toLocalDate())){
                 user.setTotal_request(user.getTotal_request()+1);
-                userRepository.save(user);
+                userResult=  userRepository.save(user);
             }
             else{
                 user.setUpdated_at(now);
                 user.setTotal_request(1L);
-                userRepository.save(user);
+                user.setUpdated_at(now);
+                userResult=  userRepository.save(user);
             }
             logger.info("update TotalRequest");
+            return userResult;
+
         } catch (Exception e) {
             logger.error("Error processing CreateUser", e);
             throw e;

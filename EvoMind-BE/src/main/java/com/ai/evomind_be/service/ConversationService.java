@@ -27,7 +27,9 @@ public class ConversationService {
         try {
             Conversation conversation = new Conversation();
             conversation.setUser(user);
-            conversation.setTopic(conversationRequest.getMessage());
+            conversation.setLastMessage(conversationRequest.getMessage());
+            conversation.setAgentName(conversationRequest.getAgentName());
+            conversation.setImage(conversationRequest.getImage());
             conversation= conversationRepository.save(conversation);
             return conversation;
         } catch (Exception e) {
@@ -44,7 +46,9 @@ public class ConversationService {
             conversationResponses = listConversationByUser.stream()
                     .map(conversation -> new ConversationResponse(
                             conversation.getId(),
-                            conversation.getTopic(),
+                            conversation.getImage(),
+                            conversation.getAgentName(),
+                            conversation.getLastMessage(),
                             conversation.getCreatedAt()
                     ))
                     .collect(Collectors.toList());

@@ -12,6 +12,7 @@ import com.ai.evomind_be.dto.response.ConversationDetailResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,8 +34,13 @@ public class ConversationDetailService {
     UserService userService;
     @Autowired
     UserRepository userRepository;
-    public void CreateConversationDetail(ConversationRequest conversationRequest,String result_message){
+    @Autowired
+    CacheManager cacheManager;
+    @Autowired
+    AiService aiService;
+    public String   CreateConversationDetail(ConversationRequest conversationRequest){
         try {
+            String result_message = "";
             User user = userRepository.findById(conversationRequest.getUser_id())
                     .orElseThrow(() -> new RuntimeException("User not found"));
             Conversation conversation = null;
@@ -44,17 +50,25 @@ public class ConversationDetailService {
             else {
                 conversation = conversationRepository.findById(conversationRequest.getConversation_id().intValue())
                         .orElseThrow(() -> new RuntimeException("conversation not found"));
-            }
 
+            }
             if(conversation!=null){
                 //ConversationDetail User
-                ConversationDetail conversationDetailUser = new ConversationDetail();
-                conversationDetailUser.setId(null);
-                conversationDetailUser.setConversation(conversation);
-                conversationDetailUser.setMessage(conversationRequest.getMessage());
-                conversationDetailUser.setIsQuestion(Boolean.TRUE);
-                conversationDetailRepository.save(conversationDetailUser);
-                logger.info("Create ConversationDetail From User" );
+                if(conversationRequest.getConversation_id() !=0){
+                    String startMessageSendAI = cacheManager.getCache("config").get("START_MESSAGE_SEND_AI", String.class).replace("[Agent_Name]",conversation.getAgentName());
+                    result_message = aiService.processMessage(startMessageSendAI+conversationRequest.getMessage());
+                    ConversationDetail conversationDetailUser = new ConversationDetail();
+                    conversationDetailUser.setId(null);
+                    conversationDetailUser.setConversation(conversation);
+                    conversationDetailUser.setMessage(conversationRequest.getMessage());
+                    conversationDetailUser.setIsQuestion(Boolean.TRUE);
+                    conversationDetailRepository.save(conversationDetailUser);
+                    logger.info("Create ConversationDetail From User" );
+                }
+                else{
+                    result_message = cacheManager.getCache("config").get("START_CONVERSATION_MESSAGE", String.class).replace("[Agent_Name]",conversation.getAgentName());
+                }
+
                 //ConversationDetail AI
                 ConversationDetail conversationDetailDetail = new ConversationDetail();
                 conversationDetailDetail.setId(null);
@@ -63,7 +77,10 @@ public class ConversationDetailService {
                 conversationDetailDetail.setIsQuestion(Boolean.FALSE);
                 conversationDetailRepository.save(conversationDetailDetail);
                 logger.info("Create ConversationDetail From AI" );
-                userService.updateTotalRequest(user);
+//                userService.updateTotalRequest(user);
+                conversation.setLastMessage(result_message);
+                conversationRepository.save(conversation);
+                return result_message;
             }
             else {
                 logger.error("conversation not found" + conversationRequest.getConversation_id());

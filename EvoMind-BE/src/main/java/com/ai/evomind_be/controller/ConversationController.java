@@ -24,8 +24,6 @@ import java.util.Objects;
 public class ConversationController  {
     private static final Logger logger = LoggerFactory.getLogger(ConversationController.class);
     @Autowired
-    AiService aiService;
-    @Autowired
     ConversationDetailService conversationDetailService;
     @Autowired
     ConversationService conversationService;
@@ -46,9 +44,10 @@ public class ConversationController  {
     }
     @PostMapping("/receiveMessage")
     public ResponseEntity<String> receiveMessage(@RequestBody ConversationRequest conversationRequest) {
-            configService.checkRequest(conversationRequest.getUser_id());
-            String response = aiService.processMessage(conversationRequest.getMessage());
-            conversationDetailService.CreateConversationDetail(conversationRequest,response);
+            if (conversationRequest.getConversation_id() !=0){
+                configService.checkRequest(conversationRequest.getUser_id());
+            }
+            String response =conversationDetailService.CreateConversationDetail(conversationRequest);
             logger.info("Response received: {}", response);
             return ResponseEntity.ok(response);
     }

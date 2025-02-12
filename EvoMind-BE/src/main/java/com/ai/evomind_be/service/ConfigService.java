@@ -26,6 +26,8 @@ public class ConfigService {
     CacheManager cacheManager;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserService userService;
     public Map<String, String> getConfig() {
         Map<String, String> config = new HashMap<String, String>();
         List<Config> lstConfig = configRepository.findAll();
@@ -39,8 +41,9 @@ public class ConfigService {
         try {
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new RuntimeException("User not found"));
+            user = userService.updateTotalRequest(user);
             Long IP_API_REQUEST_LIMIT = Long.valueOf(cacheManager.getCache("config").get("IP_API_REQUEST_LIMIT", String.class));
-            if(user.getTotal_request()>=IP_API_REQUEST_LIMIT) {
+            if(user.getTotal_request()>IP_API_REQUEST_LIMIT) {
                 logger.error("The limit for the dev-net environment is "+ IP_API_REQUEST_LIMIT +" times per account.");
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The limit for the dev-net environment is "+ IP_API_REQUEST_LIMIT +" times per account.");
             }
