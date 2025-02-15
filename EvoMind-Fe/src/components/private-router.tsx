@@ -6,19 +6,15 @@ import type React from "react"; // Added import for React
 import { useEffect } from "react";
 
 export function PrivateRoute({ children }: { children: React.ReactNode }) {
-	const { user, loading } = useAuth();
+	const { user } = useAuth();
 	console.log("🚀 ~ PrivateRoute ~ user:", user);
 	const router = useRouter();
 
 	useEffect(() => {
-		if (!loading && !user) {
+		if (!user) {
 			router.push("/");
 		}
-	}, [user, loading, router]);
-
-	if (loading) {
-		return <div>Loading...</div>;
-	}
+	}, [user, router]);
 
 	if (!user) {
 		return null;
