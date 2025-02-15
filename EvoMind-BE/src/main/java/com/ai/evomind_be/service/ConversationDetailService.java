@@ -1,6 +1,6 @@
 package com.ai.evomind_be.service;
 
-import com.ai.evomind_be.controller.ConversationController;
+
 import com.ai.evomind_be.data.models.Conversation;
 import com.ai.evomind_be.data.models.ConversationDetail;
 import com.ai.evomind_be.data.models.User;
@@ -9,17 +9,16 @@ import com.ai.evomind_be.data.repositorys.ConversationRepository;
 import com.ai.evomind_be.data.repositorys.UserRepository;
 import com.ai.evomind_be.dto.request.ConversationRequest;
 import com.ai.evomind_be.dto.response.ConversationDetailResponse;
-import com.ai.evomind_be.dto.response.ConversationResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,41 +30,66 @@ public class ConversationDetailService {
     ConversationRepository conversationRepository;
     @Autowired
     ConversationDetailRepository conversationDetailRepository;
-    public void CreateConversationDetail(ConversationRequest conversationRequest){
+    @Autowired
+    UserService userService;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    CacheManager cacheManager;
+    @Autowired
+    AiService aiService;
+    public String   CreateConversationDetail(ConversationRequest conversationRequest){
         try {
+            String result_message = "";
+            User user = userRepository.findById(conversationRequest.getUser_id())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
             Conversation conversation = null;
-            if(conversationRequest.getConversation_id()==null){
-                conversation = conversationService.CreateConversation(conversationRequest);
+            if(conversationRequest.getConversation_id()==0){
+                conversation = conversationService.CreateConversation(conversationRequest,user);
             }
             else {
                 conversation = conversationRepository.findById(conversationRequest.getConversation_id().intValue())
                         .orElseThrow(() -> new RuntimeException("conversation not found"));
-            }
 
+            }
             if(conversation!=null){
                 //ConversationDetail User
-                ConversationDetail conversationDetail = new ConversationDetail();
-                conversationDetail.setId(null);
-                conversationDetail.setConversation(conversation);
-                conversationDetail.setMessage(conversationRequest.getMessage());
-                conversationDetail.setIsQuestion(Boolean.TRUE);
-                conversationDetailRepository.save(conversationDetail);
-                logger.info("Create ConversationDetail From User" );
+                if(conversationRequest.getConversation_id() !=0){
+                    String startMessageSendAI = cacheManager.getCache("config").get("START_MESSAGE_SEND_AI", String.class).replace("[Agent_Name]",conversation.getAgentName());
+                    result_message = aiService.processMessage(startMessageSendAI+conversationRequest.getMessage());
+                    ConversationDetail conversationDetailUser = new ConversationDetail();
+                    conversationDetailUser.setId(null);
+                    conversationDetailUser.setConversation(conversation);
+                    conversationDetailUser.setMessage(conversationRequest.getMessage());
+                    conversationDetailUser.setIsQuestion(Boolean.TRUE);
+                    conversationDetailRepository.save(conversationDetailUser);
+                    logger.info("Create ConversationDetail From User" );
+                }
+                else{
+                    result_message = cacheManager.getCache("config").get("START_CONVERSATION_MESSAGE", String.class).replace("[Agent_Name]",conversation.getAgentName());
+                }
+
                 //ConversationDetail AI
-                conversationDetail.setId(null);
-                conversationDetail.setMessage(conversationRequest.getResult_message());
-                conversationDetail.setIsQuestion(Boolean.FALSE);
-                conversationDetailRepository.save(conversationDetail);
+                ConversationDetail conversationDetailDetail = new ConversationDetail();
+                conversationDetailDetail.setId(null);
+                conversationDetailDetail.setConversation(conversation);
+                conversationDetailDetail.setMessage(result_message);
+                conversationDetailDetail.setIsQuestion(Boolean.FALSE);
+                conversationDetailRepository.save(conversationDetailDetail);
                 logger.info("Create ConversationDetail From AI" );
+//                userService.updateTotalRequest(user);
+                conversation.setLastMessage(result_message);
+                conversationRepository.save(conversation);
+                return result_message;
             }
             else {
                 logger.error("conversation not found" + conversationRequest.getConversation_id());
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR , "System error");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "System error");
             }
 
         } catch (Exception e) {
             logger.error("Error processing", e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR , "System error");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "System error");
         }
     }
 

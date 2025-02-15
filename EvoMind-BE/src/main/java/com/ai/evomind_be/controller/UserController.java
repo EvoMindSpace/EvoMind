@@ -26,14 +26,13 @@ public class UserController {
     @GetMapping("/login_google")
     public ResponseEntity<Object> user(Long userId) {
         try {
-
             Map<String, Object> attributes = new HashMap<>();
             attributes=userService.GetDataUser(userId);
             logger.info("Login successful");
             return  ResponseEntity.ok(attributes);
         } catch (Exception e) {
             logger.error("Error processing user", e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR , "System error");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , e.getMessage());
         }
     }
 }

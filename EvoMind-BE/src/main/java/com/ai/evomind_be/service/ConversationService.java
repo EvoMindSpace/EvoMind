@@ -6,13 +6,10 @@ import com.ai.evomind_be.data.repositorys.ConversationRepository;
 import com.ai.evomind_be.data.repositorys.UserRepository;
 import com.ai.evomind_be.dto.request.ConversationRequest;
 import com.ai.evomind_be.dto.response.ConversationResponse;
-import groovy.lang.GString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,16 +20,16 @@ public class ConversationService {
     private static final Logger logger = LoggerFactory.getLogger(ConversationService.class);
 
     @Autowired
-    UserRepository userRepository;
-    @Autowired
     ConversationRepository conversationRepository;
-    public Conversation CreateConversation(ConversationRequest conversationRequest){
+    @Autowired
+    UserRepository userRepository;
+    public Conversation CreateConversation(ConversationRequest conversationRequest,User user){
         try {
-            User user = userRepository.findById(conversationRequest.getUser_id())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
             Conversation conversation = new Conversation();
             conversation.setUser(user);
-            conversation.setTopic(conversationRequest.getMessage());
+            conversation.setLastMessage(conversationRequest.getMessage());
+            conversation.setAgentName(conversationRequest.getAgentName());
+            conversation.setImage(conversationRequest.getImage());
             conversation= conversationRepository.save(conversation);
             return conversation;
         } catch (Exception e) {
@@ -45,11 +42,13 @@ public class ConversationService {
             List<ConversationResponse> conversationResponses = new ArrayList<>();
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new RuntimeException("User not found"));
-            List<Conversation> listConversationByUser = conversationRepository.findAllByUserId(user);
+            List<Conversation> listConversationByUser = conversationRepository.findAllByUserId(user.getId());
             conversationResponses = listConversationByUser.stream()
                     .map(conversation -> new ConversationResponse(
                             conversation.getId(),
-                            conversation.getTopic(),
+                            conversation.getImage(),
+                            conversation.getAgentName(),
+                            conversation.getLastMessage(),
                             conversation.getCreatedAt()
                     ))
                     .collect(Collectors.toList());
