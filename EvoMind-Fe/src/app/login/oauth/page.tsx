@@ -2,7 +2,7 @@
 
 import { login } from "@/apis/auth.api";
 import { useAuth } from "@/contexts/auth-context";
-import { TUser } from "@/types/user.interface";
+import { TUser } from "@/types/user.type";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";

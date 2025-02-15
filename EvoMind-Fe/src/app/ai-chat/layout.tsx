@@ -1,4 +1,4 @@
-import LayoutAiChat from "@/layouts/layout-chat";
+import LayoutDashboard from "@/layouts/layout-dashboard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,5 +11,5 @@ export default function DashboardLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	return <LayoutAiChat>{children}</LayoutAiChat>;
+	return <LayoutDashboard>{children}</LayoutDashboard>;
 }

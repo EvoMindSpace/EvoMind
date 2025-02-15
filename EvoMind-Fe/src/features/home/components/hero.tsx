@@ -4,6 +4,7 @@ import { FloatingPaper } from "@/components/floating-paper";
 import { RoboAnimation } from "@/components/robo-animation";
 import { Button } from "@/components/ui/button";
 import envConfig from "@/configs/config";
+import { useAuth } from "@/contexts/auth-context";
 import { motion } from "framer-motion";
 import { FileText, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -12,8 +13,12 @@ export default function Hero() {
 	const router = useRouter();
 
 	const handleTryNow = () => {
-		router.push(envConfig.NEXT_PUBLIC_API_URL);
+		const link = !!user ? "/dashboard" : envConfig.NEXT_PUBLIC_API_URL;
+		router.push(link);
 	};
+
+	const { user } = useAuth();
+	console.log("🚀 ~ Hero ~ user:", user);
 
 	return (
 		<div className="relative min-h-[calc(100vh-76px)] flex items-center">

@@ -12,6 +12,7 @@ import {
 	DiscIcon as Discord,
 	FileText,
 	HouseIcon,
+	MessageSquare,
 	Plus,
 	Twitter,
 } from "lucide-react";
@@ -57,12 +58,14 @@ export default function Sidebar({ isExpanded, setIsExpanded }: SidebarProps) {
 			active: "https://app.holoworld.com/icons/navbar/inventory-active.svg",
 			href: "/my-agents",
 		},
-		// {
-		// 	icon: MessageSquare,
-		// 	label: "Chat",
-		// 	image: "https://app.holoworld.com/icons/navbar/chat-white.svg",
-		// 	active: "https://app.holoworld.com/icons/navbar/chat-active.svg",
-		// },
+		{
+			index: 3,
+			icon: MessageSquare,
+			label: "Chat",
+			image: "https://app.holoworld.com/icons/navbar/chat-white.svg",
+			active: "https://app.holoworld.com/icons/navbar/chat-active.svg",
+			href: "/ai-chat",
+		},
 		// {
 		// 	index: 4,
 		// 	icon: Diamond,
