@@ -4,10 +4,15 @@ import { motion } from "framer-motion";
 import { Plus, Search } from "lucide-react";
 import * as React from "react";
 
+import { conversationApi } from "@/apis/conversation.api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useAuth } from "@/contexts/auth-context";
+import { formatDate } from "@/lib/format-date.lib";
 import { cn } from "@/lib/utils";
+import { TConversation } from "@/types/conversation.type";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { AddChatbotModal } from "./add-chatbot-modal";
 
@@ -26,55 +31,36 @@ interface Chatbot {
 	message: string;
 	timestamp: string;
 }
-const initialChatbots: Chatbot[] = [
-	{
-		id: "1",
-		avatar:
-			"https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-8im49C2rmianu5yxZ7lToR71b6sFe4.png",
-		title: "Holo Charactersdsf",
-		message: "Hey there, I am Holov asd! How are you?",
-		timestamp: "Just now",
-	},
-	{
-		id: "2",
-		avatar:
-			"https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-8im49C2rmianu5yxZ7lToR71b6sFe4.png",
-		title: "Holo Character",
-		message: "Ah, a cheerful greeting! I like it. What's on your mind...",
-		timestamp: "1d",
-	},
-];
+
 export function ChatSidebar({
 	onSelectChatbot,
-	activeChatbotId,
+	activeChatbot,
 }: {
-	onSelectChatbot: (id: string) => void;
-	activeChatbotId: string;
+	onSelectChatbot: (chatbot: TConversation) => void;
+	activeChatbot: TConversation | null;
 }) {
 	const [search, setSearch] = React.useState("");
-	const [chatbots, setChatbots] = React.useState<Chatbot[]>(initialChatbots);
 	const [isModalOpen, setIsModalOpen] = React.useState(false);
+	const { user } = useAuth();
 
-	const filteredChatbots = chatbots.filter((chatbot) =>
-		chatbot.title.toLowerCase().includes(search.toLowerCase())
-	);
+	const { data: conversations } = useQuery({
+		queryKey: ["conversation"],
+		queryFn: () => conversationApi.getAllConversation({ user_id: user?.id! }),
+		enabled: !!user,
+	});
 
-	const handleAddChatbot = (newChatbot: {
-		user_id: number;
-		message: string;
-		image: string;
-		agentName: string;
-		conversation_id: number;
-	}) => {
-		const chatbot: Chatbot = {
-			id: Date.now().toString(),
-			avatar: newChatbot.image,
-			title: newChatbot.agentName,
-			message: newChatbot.message,
-			timestamp: "Just now",
-		};
-		setChatbots([...chatbots, chatbot]);
-	};
+	const filteredChatbots = React.useMemo(() => {
+		return conversations?.filter((chatbot) =>
+			chatbot.agentName.toLowerCase().includes(search.toLowerCase())
+		);
+	}, [conversations, search]);
+
+	// set chatbot active
+	React.useEffect(() => {
+		if (!activeChatbot && filteredChatbots && filteredChatbots.length > 0) {
+			onSelectChatbot(filteredChatbots[0]);
+		}
+	}, [activeChatbot, filteredChatbots, onSelectChatbot]);
 
 	return (
 		<div className="flex h-full w-full md:w-80 flex-col bg-card text-zinc-200">
@@ -109,63 +95,74 @@ export function ChatSidebar({
 			</div>
 
 			<ScrollArea className="flex-1 px-4">
-				{filteredChatbots.map((chatbot, index) => (
-					<motion.div
-						key={chatbot.id}
-						initial={{ opacity: 0, x: -20 }}
-						animate={{ opacity: 1, x: 0 }}
-						transition={{ delay: index * 0.1 }}
-						className={cn(
-							"group relative mb-4 flex cursor-pointer gap-3 rounded-lg p-3 transition-colors",
-							chatbot.id === activeChatbotId
-								? "bg-primary/10"
-								: "hover:bg-muted"
-						)}
-						onClick={() => onSelectChatbot(chatbot.id)}
-					>
-						<Image
-							height={40}
-							width={40}
-							src={chatbot.avatar || "/placeholder.svg"}
-							alt={chatbot.title}
+				{filteredChatbots &&
+					filteredChatbots.length > 0 &&
+					filteredChatbots.map((chatbot, index) => (
+						<motion.div
+							key={chatbot.id}
+							initial={{ opacity: 0, x: -20 }}
+							animate={{ opacity: 1, x: 0 }}
+							transition={{ delay: index * 0.1 }}
 							className={cn(
-								"h-10 w-10 rounded-full object-cover border",
-								chatbot.id === activeChatbotId
-									? "border-primary"
-									: "border-muted"
+								"group relative mb-4 flex cursor-pointer gap-3 rounded-lg p-3 transition-colors",
+								chatbot.id === activeChatbot?.id
+									? "bg-primary/10"
+									: "hover:bg-muted"
 							)}
-						/>
-						<div className="flex flex-1 flex-col overflow-hidden">
-							<div className="flex items-center justify-between">
-								<h3
-									className={cn(
-										"font-medium",
-										chatbot.id === activeChatbotId
-											? "text-primary"
-											: "text-foreground"
-									)}
-								>
-									{chatbot.title}
-								</h3>
-								<span className="text-xs text-muted-foreground">
-									{chatbot.timestamp}
-								</span>
+							onClick={() => onSelectChatbot(chatbot)}
+						>
+							<Image
+								height={40}
+								width={40}
+								src={
+									chatbot.image === "defaul"
+										? "https://picsum.photos/536/354"
+										: chatbot.image
+								}
+								alt={chatbot.agentName}
+								className={cn(
+									"h-10 w-10 rounded-full object-cover border",
+									chatbot.id === activeChatbot?.id
+										? "border-primary"
+										: "border-muted"
+								)}
+								onError={(e: any) => {
+									const target = e.target as HTMLImageElement;
+									target.src = "/placeholder.svg";
+									target.onerror = null; // Tránh vòng lặp vô hạn nếu placeholder cũng lỗi
+								}}
+							/>
+							<div className="flex flex-1 flex-col overflow-hidden">
+								<div className="flex items-center justify-between">
+									<h3
+										className={cn(
+											"font-medium",
+											chatbot.id === activeChatbot?.id
+												? "text-primary"
+												: "text-foreground"
+										)}
+									>
+										{chatbot.agentName}
+									</h3>
+									<span className="text-xs text-muted-foreground">
+										{formatDate(chatbot.createdAt)}
+									</span>
+								</div>
+								<p className="truncate text-sm w-52 text-muted-foreground">
+									{chatbot.lastMessage}
+								</p>
 							</div>
-							<p className="truncate text-sm w-52 text-muted-foreground">
-								{chatbot.message}
-							</p>
-						</div>
-						{chatbot.id === activeChatbotId && (
-							<div className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary" />
-						)}
-					</motion.div>
-				))}
+							{chatbot.id === activeChatbot?.id && (
+								<div className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary" />
+							)}
+						</motion.div>
+					))}
 			</ScrollArea>
 
 			<AddChatbotModal
 				isOpen={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
-				onAddChatbot={handleAddChatbot}
+				// onAddChatbot={handleAddChatbot}
 			/>
 		</div>
 	);

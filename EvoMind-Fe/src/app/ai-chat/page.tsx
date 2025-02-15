@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ChatInterface } from "@/features/ai-chat/components/chat-interface";
 import { ChatSidebar } from "@/features/ai-chat/components/chat-sidebar";
+import { TConversation } from "@/types/conversation.type";
 import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 interface Message {
@@ -22,7 +23,9 @@ interface ChatbotProps {
 export default function AiChat() {
 	const [isMobile, setIsMobile] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
-	const [activeChatbotId, setActiveChatbotId] = useState("1"); // Mặc định là chatbot đầu tiên
+	const [activeChatbot, setActiveChatbot] = useState<TConversation | null>(
+		null
+	); // Mặc định là chatbot đầu tiên
 
 	useEffect(() => {
 		const checkIfMobile = () => setIsMobile(window.innerWidth < 768);
@@ -31,8 +34,8 @@ export default function AiChat() {
 		return () => window.removeEventListener("resize", checkIfMobile);
 	}, []);
 
-	const handleSelectChatbot = (id: string) => {
-		setActiveChatbotId(id);
+	const handleSelectChatbot = (chatbot: TConversation) => {
+		setActiveChatbot(chatbot);
 		setIsOpen(false);
 	};
 
@@ -52,7 +55,7 @@ export default function AiChat() {
 					<SheetContent side="left" className="p-0 w-80">
 						<ChatSidebar
 							onSelectChatbot={handleSelectChatbot}
-							activeChatbotId={activeChatbotId}
+							activeChatbot={activeChatbot}
 						/>
 					</SheetContent>
 				</Sheet>
@@ -60,12 +63,12 @@ export default function AiChat() {
 				<div className="hidden md:block border-r border-secondary-300">
 					<ChatSidebar
 						onSelectChatbot={handleSelectChatbot}
-						activeChatbotId={activeChatbotId}
+						activeChatbot={activeChatbot}
 					/>
 				</div>
 			)}
 			<div className="flex-1 flex flex-col">
-				<ChatInterface activeChatbotId={activeChatbotId} />
+				<ChatInterface activeChatbot={activeChatbot} />
 			</div>
 		</div>
 	);

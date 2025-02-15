@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/contexts/auth-context";
 import { ReactQueryClientProvider } from "@/providers/QueryClientProvider";
 import type { Metadata } from "next";
@@ -40,6 +41,7 @@ export default async function RootLayout({
 			<AuthProvider initialUser={data?.user?.value}>
 				<html lang="en">
 					<body className={poppins.className}>{children}</body>
+					<Toaster />
 				</html>
 			</AuthProvider>
 		</ReactQueryClientProvider>
